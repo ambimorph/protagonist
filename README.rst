@@ -1,4 +1,4 @@
 protagonist
 ===========
 
-Organises your files with non-hierarchical tags.
+A tagsystem.  Organises your files with non-hierarchical tags.
