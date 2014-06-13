@@ -1,4 +1,5 @@
-import unittest, tagger, os
+from protagonist import tagger
+import unittest, os
 
 
 class TaggerTest(unittest.TestCase):
