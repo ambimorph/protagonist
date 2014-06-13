@@ -15,3 +15,6 @@ class TaggerTest(unittest.TestCase):
         open(self.file_name_0, 'w').close()
         open(self.file_name_1, 'w').close()
         open(self.file_name_2, 'w').close()
+
+if __name__ == '__main__':
+    unittest.main()
