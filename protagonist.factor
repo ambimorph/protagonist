@@ -9,8 +9,7 @@ TUPLE: tagsystem { base-directory string initial: "./" }
 
 : <tagsystem> ( -- t ) tagsystem new
     dup tag-path dup exists?
-    [ drop ] [ make-directory ] if
-    ;
+    [ drop ] [ make-directory ] if ;
 
 : tag-exists? ( string tagsystem -- ? )
    tag-path swap append-path exists? ;

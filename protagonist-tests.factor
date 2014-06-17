@@ -6,14 +6,10 @@ IN: protagonist.tests
 
 ! First create a tagsystem by making a base directory for tags to live in.
 ! Check that the directory is there.
-[ t ]
-[ <tagsystem> tag-path exists? ]
-unit-test
+[ t ] [ <tagsystem> tag-path exists? ] unit-test
 
 ! Make sure it is idempotent.
-[ t ]
-[ <tagsystem> tag-path exists? ]
-unit-test
+[ t ] [ <tagsystem> tag-path exists? ] unit-test
 
 ! Now let's reuse the same tagsystem for awhile.
 SYMBOL: a-tagsystem
@@ -22,14 +18,10 @@ SYMBOL: a-tag-path
 a-tagsystem get tag-path a-tag-path set
 
 ! Test that there isn't a tag.
-[ t ]
-[ a-tag-path get directory-entries { } = ]
-unit-test
+[ t ] [ a-tag-path get directory-entries { } = ] unit-test
 
 ! Test that there isn't a specific tag.
-[ f ]
-[ "some-tag" a-tagsystem get tag-exists? ]
-unit-test
+[ f ] [ "some-tag" a-tagsystem get tag-exists? ] unit-test
 
 ! Let's clean up the mess.
 <tagsystem> tag-path delete-directory 
