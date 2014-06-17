@@ -5,12 +5,12 @@ IN: protagonist.tests
 ! Check that the directory is there.
 
 [ t ]
-[ tagsystem new dup create-tagsystem base-directory>> absolute-path ".protagonist" append-path exists? ]
+[ <tagsystem> tag-path exists? ]
 unit-test
 
 ! Make sure it is idempotent.
 
 [ t ]
-[ tagsystem new dup create-tagsystem base-directory>> absolute-path ".protagonist" append-path exists? ]
+[ <tagsystem> tag-path exists? ]
 unit-test
 
