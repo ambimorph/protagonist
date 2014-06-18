@@ -1,4 +1,4 @@
-USING: tools.test sequences kernel protagonist accessors io.files io.pathnames io.directories namespaces ;
+USING: tools.test sequences kernel protagonist accessors io.files io.pathnames io.directories namespaces io.directories.hierarchy ;
 IN: protagonist.tests
 
 ! Let's go somewhere else to make messes.
@@ -23,5 +23,8 @@ a-tagsystem get tag-path a-tag-path set
 ! Test that there isn't a specific tag.
 [ f ] [ "some-tag" a-tagsystem get tag-exists? ] unit-test
 
+! Add a tag.
+[ t ] [ "some-tag" a-tagsystem get 2dup add-tag tag-exists? ] unit-test
+
 ! Let's clean up the mess.
-<tagsystem> tag-path delete-directory 
+a-tag-path get delete-tree

@@ -12,4 +12,8 @@ TUPLE: tagsystem { base-directory string initial: "./" }
     [ drop ] [ make-directory ] if ;
 
 : tag-exists? ( string tagsystem -- ? )
-   tag-path swap append-path exists? ;
+    tag-path swap append-path exists? ;
+
+: add-tag ( string tagsystem -- )
+    2dup tag-exists?
+    [ drop drop ] [ tag-path swap append-path make-directory ] if ;
