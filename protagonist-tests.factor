@@ -24,10 +24,16 @@ current-directory get tag-path a-tag-path set
 ! Add a tag.
 [ t ] [ a-tag-path get "some-tag" 2dup add-tag tag-exists? ] unit-test
 
+! Here's a file and a tag.
+SYMBOL: hello-file-path
+"hellofile" absolute-path hello-file-path set
+"hello, world!\n" hello-file-path get utf8 set-file-contents
+
 ! Tag a file with a new tag.
+! (This tests that the file exists, but not that it is properly linked.)
 [ t ]
-[ "hello, world!\n" "hellofile" utf8 set-file-contents
-  "hellofile" absolute-path dup make-file-id
+[
+  hello-file-path get dup make-file-id
   swap a-tag-path get "whee" tag-file
   a-tag-path get "whee" append-path prepend-path exists?
 ] unit-test
