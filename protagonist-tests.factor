@@ -36,12 +36,9 @@ SYMBOL: hello-file-path
   hello-file-path get dup make-file-id
   swap a-tag-path get "whee" tag-file
   a-tag-path get "whee" append-path prepend-path
-  dup exists?
-  swap
   file-info ino>>
   hello-file-path get file-info ino>>
   =
-  and
 ] unit-test
 
 ! Let's clean up the mess.
