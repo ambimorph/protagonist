@@ -23,4 +23,4 @@ IN: protagonist
 
 : tag-file ( path path string -- )
     ! file tag-path tag
-    2dup add-tag append-path [ dup make-file-id ] dip swap append-path make-hard-link ;
+    2dup add-tag append-path [ dup make-file-id ] dip prepend-path make-hard-link ;

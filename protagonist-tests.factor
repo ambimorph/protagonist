@@ -29,7 +29,7 @@ current-directory get tag-path a-tag-path set
 [ "hello, world!\n" "hellofile" utf8 set-file-contents
   "hellofile" absolute-path dup make-file-id
   swap a-tag-path get "whee" tag-file
-  a-tag-path get "whee" append-path swap append-path exists?
+  a-tag-path get "whee" append-path prepend-path exists?
 ] unit-test
 
 ! Let's clean up the mess.
