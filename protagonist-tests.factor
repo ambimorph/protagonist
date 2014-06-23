@@ -26,8 +26,13 @@ current-directory get tag-path a-tag-path set
 
 ! Here's a file and a tag.
 SYMBOL: hello-file-path
-"hellofile" absolute-path hello-file-path set
+"hellofile.txt" absolute-path hello-file-path set
 "hello, world!\n" hello-file-path get utf8 set-file-contents
+
+! Test file ids with md5.
+[ t ] [ hello-file-path get make-file-id "910c8bc73110b0cd1bc5d2bcae782511.txt" = ]
+unit-test
+
 
 ! Tag a file with a new tag.
 ! (This tests that the file exists, but not that it is properly linked.)
