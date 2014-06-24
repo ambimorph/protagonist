@@ -1,4 +1,4 @@
-import os, shutil
+import os
 
 class Tagger():
 
@@ -13,6 +13,3 @@ class Tagger():
         except OSError, e:
             pass
 
-    def delete_tagsystem(self):
-
-        shutil.rmtree(self.dict_directory)
