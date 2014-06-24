@@ -37,6 +37,13 @@ class TaggerTest(unittest.TestCase):
         self.tagger.create_tagsystem()
         self.assertTrue(os.path.exists(self.tagger.tag_directory))
 
+    def test_add_tag(self):
+
+        map(self.tagger.add_tag, self.test_tags)
+        expected_directories = [self.tagger.tag_directory + "/" + t for t in self.test_tags]
+        for directory in expected_directories:
+            self.assertTrue(os.path.exists(directory))
+
     def tearDown(self):
 
         shutil.rmtree(self.sandbox)

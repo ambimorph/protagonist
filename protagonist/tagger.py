@@ -15,3 +15,9 @@ class Tagger():
         except OSError, e:
             pass
 
+    def add_tag(self, tag):
+
+        try:
+            os.mkdir(self.tag_directory + tag + "/")
+        except OSError, e:
+            pass
