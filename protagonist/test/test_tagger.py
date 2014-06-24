@@ -44,6 +44,11 @@ class TaggerTest(unittest.TestCase):
         for directory in expected_directories:
             self.assertTrue(os.path.exists(directory))
 
+        # Also check for idempotence
+        map(self.tagger.add_tag, self.test_tags)
+        for directory in expected_directories:
+            self.assertTrue(os.path.exists(directory))
+
     def tearDown(self):
 
         shutil.rmtree(self.sandbox)
