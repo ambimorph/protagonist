@@ -1,12 +1,6 @@
 USING: io sequences kernel strings io.directories io.pathnames accessors io.files io.files.links checksums checksums.md5 byte-arrays io.encodings.utf8 ;
 IN: protagonist
 
-! TUPLE: tagsystem { base-directory string initial: "./" }
-!                  { tag-directory string initial: ".protagonist" } ;
-
-! : tag-path ( tagsystem -- string )
-!     [ base-directory>>  absolute-path ] [ tag-directory>> ] bi append-path ;
-
 : tag-path ( path -- path )
     ".protagonist" append-path dup exists?
     [ ] [ dup make-directory ] if ;
