@@ -6,7 +6,8 @@ class TaggerTest(unittest.TestCase):
 
     def setUp(self):
 
-        tagger.create_tagsystem({"base_directory" : "/tmp/.protagonist"})
+        self.tagger = tagger.Tagger()
+        self.tagger.create_tagsystem()
 
         self.test_tags = ["test_tag_" + str(i) for i in range(2)]
         self.file_names = ["file_name_" + str(i) for i in range(2)]

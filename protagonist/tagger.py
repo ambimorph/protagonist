@@ -2,6 +2,10 @@ import sys
 
 class Tagger():
 
-    def create_tagsystem(config, out=sys.stdout, err=sys.stderr):
-        base_directory = config['base_directory']
-        # This should always be called with an absolute Unicode base_directory.
+    def __init__(base_directory):
+
+        self.base_directory = base_directory
+
+    def create_tagsystem():
+        
+        pass
