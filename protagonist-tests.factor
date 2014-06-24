@@ -35,7 +35,6 @@ unit-test
 
 
 ! Tag a file with a new tag.
-! (This tests that the file exists, but not that it is properly linked.)
 [ t ]
 [
   hello-file-path get dup make-file-id
