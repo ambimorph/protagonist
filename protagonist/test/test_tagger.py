@@ -31,11 +31,11 @@ class TaggerTest(unittest.TestCase):
 
     def test_create_tagsystem(self):
 
-        self.assertTrue(os.path.exists(self.tagger.dict_directory))
+        self.assertTrue(os.path.exists(self.tagger.tag_directory))
 
         # Also check for idempotence
         self.tagger.create_tagsystem()
-        self.assertTrue(os.path.exists(self.tagger.dict_directory))
+        self.assertTrue(os.path.exists(self.tagger.tag_directory))
 
     def tearDown(self):
 
