@@ -1,5 +1,5 @@
 from protagonist import tagger
-import unittest, os
+import unittest, os, shutil
 
 
 class TaggerTest(unittest.TestCase):
@@ -28,6 +28,10 @@ class TaggerTest(unittest.TestCase):
             open(file_name, 'w').close()
 
         map(touch, self.file_names)
+
+    def tearDown(self):
+
+        shutil.rmtree(self.sandbox)
 
 if __name__ == '__main__':
     unittest.main()
