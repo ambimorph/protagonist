@@ -1,11 +1,18 @@
-import sys
+import os, shutil
 
 class Tagger():
 
     def __init__(self, base_directory):
 
-        self.base_directory = base_directory
+        self.dict_directory = base_directory + "/.protagonist/"
 
-    def create_tagsystem():
-        
-        pass
+    def create_tagsystem(self):
+
+        try:
+            os.mkdir(self.dict_directory)
+        except OSError, e:
+            pass
+
+    def delete_tagsystem(self):
+
+        shutil.rmtree(self.dict_directory)
