@@ -52,6 +52,11 @@ The tagsystem should support:
 * tagging and untagging files
 * querying with boolean combinations
 
+creation of a tagsystem
+-----------------------
+
+Tagsystem creation is idempotent.  If there is already a tagsystem there, nothing is changed.
+
 untagging files
 ---------------
 
