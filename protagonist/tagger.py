@@ -55,3 +55,7 @@ class Tagger():
         except AssertionError, e:
             return (False, file_name + " is not tagged with " + tag + " (but a copy is)!\n")
         os.remove(tagged_file_path)
+
+        # If the tag directory is now empty, remove it.
+        if os.listdir(self.tag_directory + tag) == []:
+            os.rmdir(self.tag_directory + tag)

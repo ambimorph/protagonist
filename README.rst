@@ -57,6 +57,7 @@ untagging files
 
 When we wish to remove a tag, t, from a file, f:
 
+* If f was the only file with tag t, then tag t should also be removed from the tagsystem.
 * Because files with identical content have the same file id, a request to untag f, when f is not tagged, but an identical file f' is tagged could result in untagging the wrong file copy.  Therefore care must be taken to assure that f is the correct link in the file.  For this we will use inodes instead of content hashing.
 
 
