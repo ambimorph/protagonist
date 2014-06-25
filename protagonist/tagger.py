@@ -1,4 +1,4 @@
-import os
+import os, shutil
 from pyblake2 import blake2b
 
 class Tagger():
@@ -59,3 +59,10 @@ class Tagger():
         # If the tag directory is now empty, remove it.
         if os.listdir(self.tag_directory + tag) == []:
             os.rmdir(self.tag_directory + tag)
+
+    def delete_tag(self, tag):
+
+        try:
+            shutil.rmtree(self.tag_directory + tag)
+        except OSError, e:
+            pass
