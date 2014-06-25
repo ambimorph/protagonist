@@ -23,11 +23,15 @@ class TaggerTest(unittest.TestCase):
 
         self.test_tags = ["test_tag_" + str(i) for i in range(2)]
         self.file_names = [self.sandbox + "file_name_" + str(i) + ".txt" for i in range(2)]
+        self.file_contents = ["foo", "bar", "baz"]
 
-        def touch(file_name):
-            open(file_name, 'w').close()
+        def insert_contents(file_name, content_string):
+            f = open(file_name,'w')
+            f.write(content_string)
+            f.close()
 
-        map(touch, self.file_names)
+        for i in range(2):
+            insert_contents(self.file_names[i], self.file_contents[i])
 
     def test_create_tagsystem(self):
 
@@ -51,16 +55,14 @@ class TaggerTest(unittest.TestCase):
 
     def test_make_file_id(self):
 
-        hellofile = self.sandbox + "hellofile.txt"
-        open(hellofile, 'w').write("Hello, world!\n")
-        file_id = self.tagger.make_file_id(hellofile)
-        self.assertEqual(file_id, "27406a32541c9783e0ce5e47dedab392728565a4.txt"), file_id
+        file_id = self.tagger.make_file_id(self.file_names[0])
+        self.assertEqual(file_id, "983ceba2afea8694cc933336b27b907f90c53a88.txt"), file_id
 
     def test_tag_file(self):
 
         self.tagger.tag_file(self.file_names[0], self.test_tags[0])
         directory_path = self.tagger.tag_directory + "/" +  self.test_tags[0] + "/"
-        self.assertTrue(os.path.exists(directory_path + "3345524abf6bbe1809449224b5972c41790b6cf2.txt"), msg = os.listdir(directory_path))
+        self.assertTrue(os.path.exists(directory_path + "983ceba2afea8694cc933336b27b907f90c53a88.txt"), msg = os.listdir(directory_path))
 
     def tearDown(self):
 
