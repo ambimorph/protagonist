@@ -56,6 +56,12 @@ class TaggerTest(unittest.TestCase):
         file_id = self.tagger.make_file_id(hellofile)
         self.assertEqual(file_id, "27406a32541c9783e0ce5e47dedab392728565a4.txt"), file_id
 
+    def test_tag_file(self):
+
+        self.tagger.tag_file(self.file_names[0], self.test_tags[0])
+        directory_path = self.tagger.tag_directory + "/" +  self.test_tags[0] + "/"
+        self.assertTrue(os.path.exists(directory_path + "3345524abf6bbe1809449224b5972c41790b6cf2.txt"), msg = os.listdir(directory_path))
+
     def tearDown(self):
 
         shutil.rmtree(self.sandbox)

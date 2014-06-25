@@ -30,3 +30,8 @@ class Tagger():
         blake2hash = blake2b(contents, digest_size=20).hexdigest()
         return blake2hash + extension
 
+    def tag_file(self, file_name, tag):
+
+        self.add_tag(tag)
+        file_id = self.make_file_id(file_name)
+        os.link(file_name, self.tag_directory + tag + "/" + file_id)
