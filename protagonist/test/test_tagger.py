@@ -22,7 +22,7 @@ class TaggerTest(unittest.TestCase):
         self.tagger.create_tagsystem()
 
         self.test_tags = ["test_tag_" + str(i) for i in range(2)]
-        self.file_names = [self.sandbox + "file_name_" + str(i) for i in range(2)]
+        self.file_names = [self.sandbox + "file_name_" + str(i) + ".txt" for i in range(2)]
 
         def touch(file_name):
             open(file_name, 'w').close()
@@ -48,6 +48,13 @@ class TaggerTest(unittest.TestCase):
         map(self.tagger.add_tag, self.test_tags)
         for directory in expected_directories:
             self.assertTrue(os.path.exists(directory))
+
+    def test_make_file_id(self):
+
+        hellofile = self.sandbox + "hellofile.txt"
+        open(hellofile, 'w').write("Hello, world!\n")
+        file_id = self.tagger.make_file_id(hellofile)
+        self.assertEqual(file_id, "27406a32541c9783e0ce5e47dedab392728565a4.txt"), file_id
 
     def tearDown(self):
 

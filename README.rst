@@ -51,3 +51,10 @@ The tagsystem should support:
 * addition and deletion of tags
 * tagging and untagging files
 * querying with boolean combinations
+
+
+Dependencies
+============
+
+* `pyblake2 <https://github.com/dchest/pyblake2>`_
+
