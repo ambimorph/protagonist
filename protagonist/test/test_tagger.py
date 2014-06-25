@@ -20,9 +20,10 @@ class TaggerTest(unittest.TestCase):
         # Now setup for real
         self.tagger = tagger.Tagger(self.sandbox)
         self.tagger.create_tagsystem()
+        n = 3 # number of files and tags to create for testing
 
-        self.test_tags = ["test_tag_" + str(i) for i in range(2)]
-        self.file_names = [self.sandbox + "file_name_" + str(i) + ".txt" for i in range(2)]
+        self.test_tags = ["test_tag_" + str(i) for i in range(n)]
+        self.file_names = [self.sandbox + "file_name_" + str(i) + ".txt" for i in range(n)]
         self.file_contents = ["foo", "bar", "baz"]
 
         def insert_contents(file_name, content_string):
@@ -30,7 +31,7 @@ class TaggerTest(unittest.TestCase):
             f.write(content_string)
             f.close()
 
-        for i in range(2):
+        for i in range(3):
             insert_contents(self.file_names[i], self.file_contents[i])
 
     def test_create_tagsystem(self):
