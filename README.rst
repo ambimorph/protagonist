@@ -52,6 +52,13 @@ The tagsystem should support:
 * tagging and untagging files
 * querying with boolean combinations
 
+untagging files
+---------------
+
+When we wish to remove a tag, t, from a file, f:
+
+* Because files with identical content have the same file id, a request to untag f, when f is not tagged, but an identical file f' is tagged could result in untagging the wrong file copy.  Therefore care must be taken to assure that f is the correct link in the file.  For this we will use inodes instead of content hashing.
+
 
 Dependencies
 ============

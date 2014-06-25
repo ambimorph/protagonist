@@ -65,6 +65,17 @@ class TaggerTest(unittest.TestCase):
         directory_path = self.tagger.tag_directory + "/" +  self.test_tags[0] + "/"
         self.assertTrue(os.path.exists(directory_path + "983ceba2afea8694cc933336b27b907f90c53a88.txt"), msg = os.listdir(directory_path))
 
+    def test_untag_file_keep_tag(self):
+
+        for file_name in self.file_names:
+            self.tagger.tag_file(file_name, self.test_tags[0])
+        directory_path = self.tagger.tag_directory + "/" +  self.test_tags[0] + "/"
+        self.tagger.untag_file(self.file_names[0], self.test_tags[0])
+
+        self.assertFalse(os.path.exists(directory_path + "983ceba2afea8694cc933336b27b907f90c53a88.txt"), msg = os.listdir(directory_path))
+        for file_id in ["ace9b3802f7beb30d6cc569dea9a379102d5982e.txt", "fd92e513d00441bfdcce4a6d3878ea4d97e2b684.txt"]:
+            self.assertTrue(os.path.exists(directory_path + file_id), msg = os.listdir(directory_path))
+
     def tearDown(self):
 
         shutil.rmtree(self.sandbox)
