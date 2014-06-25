@@ -65,7 +65,7 @@ class TaggerTest(unittest.TestCase):
         directory_path = self.tagger.tag_directory + "/" +  self.test_tags[0] + "/"
         self.assertTrue(os.path.exists(directory_path + "983ceba2afea8694cc933336b27b907f90c53a88.txt"), msg = os.listdir(directory_path))
 
-    def test_untag_file_keep_tag(self):
+    def test_untag_file(self):
 
         for file_name in self.file_names:
             self.tagger.tag_file(file_name, self.test_tags[0])
