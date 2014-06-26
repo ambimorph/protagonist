@@ -8,6 +8,7 @@ class Tagger():
         self.dict_directory = base_directory + "/.protagonist/"
         self.tag_directory = self.dict_directory + "tags/"
         self.truenames_directory = self.dict_directory + "truenames/"
+        self.create_tagsystem()
 
     def create_tagsystem(self):
 

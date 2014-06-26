@@ -19,7 +19,6 @@ class TaggerTest(unittest.TestCase):
 
         # Now setup for real
         self.tagger = tagger.Tagger(self.sandbox)
-        self.tagger.create_tagsystem()
         n = 3 # number of files and tags to create for testing
 
         self.test_tags = ["test_tag_" + str(i) for i in range(n)]
