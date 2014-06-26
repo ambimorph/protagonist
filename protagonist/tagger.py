@@ -7,12 +7,14 @@ class Tagger():
 
         self.dict_directory = base_directory + "/.protagonist/"
         self.tag_directory = self.dict_directory + "tags/"
+        self.truenames_directory = self.dict_directory + "truenames/"
 
     def create_tagsystem(self):
 
         try:
             os.mkdir(self.dict_directory)
             os.mkdir(self.tag_directory)
+            os.mkdir(self.truenames_directory)
         except OSError, e:
             pass
 
@@ -35,6 +37,7 @@ class Tagger():
         self.add_tag(tag)
         file_id = self.make_file_id(file_name)
         os.link(file_name, self.tag_directory + tag + "/" + file_id)
+        open(self.truenames_directory + file_id, 'w').write(os.path.abspath(file_name))
 
     def get_inode(self, file_name):
         return os.stat(file_name).st_ino

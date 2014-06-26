@@ -41,6 +41,7 @@ class TaggerTest(unittest.TestCase):
         # Also check for idempotence
         self.tagger.create_tagsystem()
         self.assertTrue(os.path.exists(self.tagger.tag_directory))
+        self.assertTrue(os.path.exists(self.tagger.truenames_directory))
 
     def test_add_tag(self):
 
@@ -62,8 +63,12 @@ class TaggerTest(unittest.TestCase):
     def test_tag_file(self):
 
         self.tagger.tag_file(self.file_names[0], self.test_tags[0])
+        expected_file_id = "983ceba2afea8694cc933336b27b907f90c53a88.txt"
         directory_path = self.tagger.tag_directory + "/" +  self.test_tags[0] + "/"
-        self.assertTrue(os.path.exists(directory_path + "983ceba2afea8694cc933336b27b907f90c53a88.txt"), msg = os.listdir(directory_path))
+        self.assertTrue(os.path.exists(directory_path + expected_file_id), msg = os.listdir(directory_path))
+        self.assertTrue(os.path.exists(self.tagger.truenames_directory + expected_file_id), msg = os.listdir(self.tagger.truenames_directory))
+        contents = open(self.tagger.truenames_directory + expected_file_id, 'r').read()
+        self.assertEquals(contents, self.file_names[0]), contents
 
     def test_untag_file(self):
 

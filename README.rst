@@ -50,14 +50,8 @@ This motivates some kind of index.
 Part of the goals of this project is to use the directory structure of the underlying filesystem as a primitive that can be used as a data structure.
 Therefore, I wish to avoid symlinks and databases in favour of filesystem mechanisms.
 
-Some possible designs under consideration:
-#. Throw away all of the original path except the filename, and keep this in a key-value pair.
-   But this would require a linear search in the number of files to get the name.
-#. Map the whole true name path into a mirror directory in the tagsystem, with the filename itself as the leaf directory.
-   This may be overkill, and it still doesn't solve the search problem.
-#. Keep a table in a text file.
-   This might be okay, but is veering close to the database solution.
-#. Keep a binary search tree made of directories.
+The design I have chosen is to make a special directory called "true_names", where there is a file named with the file ID, the contents of which are the true pathname.
+This is eerily like implementing symlinks, where the file ID is a hash instead of an inode ID.
 
 
 Methods
