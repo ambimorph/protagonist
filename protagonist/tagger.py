@@ -3,7 +3,7 @@ from pyblake2 import blake2b
 
 class Tagger():
 
-    def __init__(self, base_directory):
+    def __init__(self, base_directory=os.getcwd()):
 
         self.dict_directory = base_directory + "/.protagonist/"
         self.tag_directory = self.dict_directory + "tags/"
