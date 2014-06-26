@@ -9,7 +9,7 @@ A *tagsystem*: organise files with non-hierarchical tags.
 
 * Search with a Boolean query: `TAG-LS types AND NOT Haskell`
 
-* Designed for compatibility with `Taho-LAFS` back up:
+* Designed for compatibility with `Tahoe-LAFS` back up:
 
   * recursively backs up all files in a directory.
   * Does not natively represent symlinks, so it doesn't follow them.
@@ -63,7 +63,7 @@ It's harder, better, stronger, faster than MD5.
 Problem: not human readable
 ---------------------------
 
-We add an index .protagonist/truenames/ that has a file correspondig to each tagged file in the system.
+We add an index .protagonist/truenames/ that has a file corresponding to each tagged file in the system.
 
 * Its name is the ID.
 * Its contents is the string of the pathname.
