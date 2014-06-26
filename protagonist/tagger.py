@@ -5,9 +5,9 @@ class Tagger():
 
     def __init__(self, base_directory=os.getcwd()):
 
-        self.dict_directory = base_directory + "/.protagonist/"
-        self.tag_directory = self.dict_directory + "tags/"
-        self.truenames_directory = self.dict_directory + "truenames/"
+        self.dict_directory = os.path.abspath(os.path.join(base_directory, ".protagonist"))
+        self.tag_directory = os.path.join(self.dict_directory, "tags")
+        self.truenames_directory = os.path.join(self.dict_directory, "truenames")
         self.create_tagsystem()
 
     def create_tagsystem(self):
@@ -22,7 +22,7 @@ class Tagger():
     def add_tag(self, tag):
 
         try:
-            os.mkdir(self.tag_directory + tag + "/")
+            os.mkdir(os.path.join(self.tag_directory, tag))
         except OSError, e:
             pass
 
@@ -37,15 +37,15 @@ class Tagger():
 
         self.add_tag(tag)
         file_id = self.make_file_id(file_name)
-        os.link(file_name, self.tag_directory + tag + "/" + file_id)
-        open(self.truenames_directory + file_id, 'w').write(os.path.abspath(file_name))
+        os.link(file_name, os.path.join(self.tag_directory, tag, file_id))
+        open(os.path.join(self.truenames_directory, file_id), 'w').write(os.path.abspath(file_name))
 
     def get_inode(self, file_name):
         return os.stat(file_name).st_ino
 
     def untag_file(self, file_name, tag):
 
-        tagged_file_path = self.tag_directory + tag + "/" + self.make_file_id(file_name)
+        tagged_file_path = os.path.join(self.tag_directory, tag, self.make_file_id(file_name))
 
         # Assert a copy of the file is tagged with tag
         try:
@@ -61,13 +61,13 @@ class Tagger():
         os.remove(tagged_file_path)
 
         # If the tag directory is now empty, remove it.
-        if os.listdir(self.tag_directory + tag) == []:
-            os.rmdir(self.tag_directory + tag)
+        if os.listdir(os.path.join(self.tag_directory, tag)) == []:
+            os.rmdir(os.path.join(self.tag_directory, tag))
 
     def delete_tag(self, tag):
 
         try:
-            shutil.rmtree(self.tag_directory + tag)
+            shutil.rmtree(os.path.join(self.tag_directory, tag))
         except OSError, e:
             pass
 
@@ -76,7 +76,7 @@ class Tagger():
         Returns the set of file IDs that match a given tag.
         """
 
-        this_tag_path = self.tag_directory + tag + "/"
+        this_tag_path = os.path.join(self.tag_directory, tag)
         if os.path.exists(this_tag_path):
             return set(os.listdir(this_tag_path))
         else:
