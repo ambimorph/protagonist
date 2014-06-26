@@ -103,6 +103,16 @@ class TaggerTest(unittest.TestCase):
         tagged = self.tagger.tag_ls(self.test_tags[0])
         self.assertSetEqual(tagged, set(map(self.tagger.make_file_id, self.file_names))), tagged
 
+    def test_get_names(self):
+
+        for file_name in self.file_names:
+            self.tagger.tag_file(file_name, self.test_tags[0])
+
+        ids = map(self.tagger.make_file_id, self.file_names)
+        names = self.tagger.get_names(ids)
+        self.assertListEqual(names, self.file_names), names
+
+
     def tearDown(self):
 
         shutil.rmtree(self.sandbox)

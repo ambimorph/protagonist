@@ -80,3 +80,10 @@ class Tagger():
             return set(os.listdir(this_tag_path))
         else:
             return set([])
+
+    def get_names(self, file_set):
+
+        def name(file_id):
+            return open(self.truenames_directory + file_id, 'r').read()
+
+        return map(name, file_set)
