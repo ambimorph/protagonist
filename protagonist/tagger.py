@@ -66,3 +66,14 @@ class Tagger():
             shutil.rmtree(self.tag_directory + tag)
         except OSError, e:
             pass
+
+    def tag_ls(self, tag):
+        """
+        Returns the set of file IDs that match a given tag.
+        """
+
+        this_tag_path = self.tag_directory + tag + "/"
+        if os.path.exists(this_tag_path):
+            return set(os.listdir(this_tag_path))
+        else:
+            return set([])
