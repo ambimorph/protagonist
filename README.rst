@@ -41,6 +41,24 @@ Using content-based hashing on mutable files will not have these advantages, tho
 
 Using hard links will have repercussions for deleting files that have been tagged.  With symlinks, a deleted or moved file will leave broken links.  With hard links, there would need to be special logic for determining whether the file exists outside of the tagsystem.
 
+True Names
+----------
+
+A potential problem with using unique IDs is that now the result of a `tagls` is not recognisable to the user.
+This motivates some kind of index.
+
+Part of the goals of this project is to use the directory structure of the underlying filesystem as a primitive that can be used as a data structure.
+Therefore, I wish to avoid symlinks and databases in favour of filesystem mechanisms.
+
+Some possible designs under consideration:
+#. Throw away all of the original path except the filename, and keep this in a key-value pair.
+   But this would require a linear search in the number of files to get the name.
+#. Map the whole true name path into a mirror directory in the tagsystem, with the filename itself as the leaf directory.
+   This may be overkill, and it still doesn't solve the search problem.
+#. Keep a table in a text file.
+   This might be okay, but is veering close to the database solution.
+#. Keep a binary search tree made of directories.
+
 
 Methods
 =======
