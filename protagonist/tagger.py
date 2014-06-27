@@ -29,7 +29,8 @@ class Tagger():
     def make_file_id(self, file_name):
 
         extension = os.path.splitext(file_name)[1]
-        contents = open(file_name, 'r').read()
+        with open(file_name, 'r') as f:
+            contents = f.read()
         blake2hash = blake2b(contents, digest_size=20).hexdigest()
         return blake2hash + extension
 
@@ -38,7 +39,8 @@ class Tagger():
         self.add_tag(tag)
         file_id = self.make_file_id(file_name)
         os.link(file_name, os.path.join(self.tag_directory, tag, file_id))
-        open(os.path.join(self.truenames_directory, file_id), 'w').write(os.path.abspath(file_name))
+        with open(os.path.join(self.truenames_directory, file_id), 'w') as f:
+            f.write(os.path.abspath(file_name))
 
     def get_inode(self, file_name):
         return os.stat(file_name).st_ino
@@ -85,6 +87,7 @@ class Tagger():
     def get_names(self, file_set):
 
         def name(file_id):
-            return open(self.truenames_directory + file_id, 'r').read()
+            with open(os.path.join(self.truenames_directory, file_id), 'r') as f:
+                return f.read()
 
         return map(name, file_set)
