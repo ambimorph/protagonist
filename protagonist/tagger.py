@@ -53,13 +53,13 @@ class Tagger():
         try:
             assert os.path.exists(tagged_file_path)
         except AssertionError, e:
-            return (False, file_name + " is not tagged with " + tag + "!\n")
+            raise TaggerException(file_name + " is not tagged with " + tag + "!\n")
 
         # Assert the tagged copy is this copy
         try:
             assert os.stat(file_name).st_ino == os.stat(tagged_file_path).st_ino
         except AssertionError, e:
-            return (False, file_name + " is not tagged with " + tag + " (but a copy is)!\n")
+            raise TaggerException(file_name + " is not tagged with " + tag + " (but a copy is)!\n")
         os.remove(tagged_file_path)
 
         # If the tag directory is now empty, remove it.
@@ -91,3 +91,6 @@ class Tagger():
                 return f.read()
 
         return map(name, file_set)
+            
+class TaggerException(Exception):
+    pass

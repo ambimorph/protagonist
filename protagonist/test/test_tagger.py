@@ -33,6 +33,9 @@ class TaggerTest(unittest.TestCase):
         for i in range(3):
             insert_contents(self.file_names[i], self.file_contents[i])
 
+        self.duplicate = os.path.join(self.sandbox, "dup.txt")
+        insert_contents(self.duplicate, "foo")
+
     def test_create_tagsystem(self):
 
         self.assertTrue(os.path.exists(self.tagger.tag_directory))
@@ -70,6 +73,12 @@ class TaggerTest(unittest.TestCase):
         self.assertEquals(contents, self.file_names[0]), contents
 
     def test_untag_file(self):
+
+        with self.assertRaises(tagger.TaggerException):
+            self.tagger.untag_file(self.file_names[0], self.test_tags[0])
+
+        with self.assertRaises(tagger.TaggerException):
+            self.tagger.untag_file(self.duplicate, self.test_tags[0])
 
         for file_name in self.file_names:
             self.tagger.tag_file(file_name, self.test_tags[0])
