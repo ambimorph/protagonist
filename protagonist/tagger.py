@@ -14,6 +14,7 @@ class Tagger():
             "OR": (set.union, 2),
             "NOT": ((lambda x: set.difference(self.universe(), x)), 1)
             }
+        self.parentheses = ["(", ")"]
 
     def universe(self):
         return set(os.listdir(self.truenames_directory))
@@ -123,9 +124,17 @@ class Tagger():
 
         for el in bool_list:
 
-            if el in self.OPS:
-                if operator_stack == [] or el == "NOT":
+            if el in self.OPS or el in self.parentheses:
+                if operator_stack == [] or el in ["NOT", "("]:
                     operator_stack.append(el)
+                elif el == ")":
+                    try:
+                        while operator_stack[-1] != "(":
+                            operator = operator_stack.pop()
+                            result_stack.append(apply(operator))
+                        operator_stack.pop()
+                    except IndexError, e:
+                        raise TaggerException("Unbalanced parantheses.")
                 else:
                     operator = operator_stack.pop()
                     result_stack.append(apply(operator))

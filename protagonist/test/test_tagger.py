@@ -165,6 +165,20 @@ class TaggerTest(unittest.TestCase):
         result = get_names_matching_bool(expression)
         self.assertSetEqual(result, set([self.file_names[0]]))
 
+        # Expressions with parenthesis
+
+        expression = "( " + self.test_tags[0] + " )"
+        result = get_names_matching_bool(expression)
+        self.assertSetEqual(result, set([self.file_names[0]]))
+
+        expression = self.test_tags[1] + " OR " + self.test_tags[2] + " AND " + self.test_tags[0] + " )"
+        with self.assertRaises(tagger.TaggerException):
+            result = get_names_matching_bool(expression)
+
+        expression = self.test_tags[1] + " OR ( " + self.test_tags[2] + " AND " + self.test_tags[0] + " )"
+        result = get_names_matching_bool(expression)
+        self.assertSetEqual(result, set([self.file_names[:1]]))
+
     def tearDown(self):
 
         shutil.rmtree(self.sandbox)
