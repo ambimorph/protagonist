@@ -108,7 +108,6 @@ class Tagger():
         result_stack = []
         operator_stack = []
 
-
         def apply(op):
             function = self.OPS[op][0]
             arity = self.OPS[op][1]
