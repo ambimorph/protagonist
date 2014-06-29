@@ -104,6 +104,11 @@ class Tagger():
         """
 
         """
+
+        def trace():
+            for l in [bool_list, result_stack, operator_stack]:
+                print l
+
         bool_list = bool_string.split()
         result_stack = []
         operator_stack = []
