@@ -101,7 +101,7 @@ class Tagger():
 
         return set(map(name, file_set))
 
-    def parse(self, bool_string):
+    def parse(self, bool_list):
         """
 
         """
@@ -110,7 +110,6 @@ class Tagger():
             for l in [bool_list, result_stack, operator_stack]:
                 print l
 
-        bool_list = bool_string.split()
         result_stack = []
         operator_stack = []
 

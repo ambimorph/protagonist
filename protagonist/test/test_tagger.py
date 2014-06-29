@@ -133,50 +133,50 @@ class TaggerTest(unittest.TestCase):
         # file0 is also tagged with tag1
 
         # expression is a single term
-        result = get_names_matching_bool(self.test_tags[0])
+        result = get_names_matching_bool([self.test_tags[0]])
         self.assertSetEqual(result, set([self.file_names[0]]))
 
         # expression consists of one AND
         expression = self.test_tags[0] + " AND " + self.test_tags[1]
-        result = get_names_matching_bool(expression)
+        result = get_names_matching_bool(expression.split())
         self.assertSetEqual(result, set([self.file_names[0]]))
 
         expression = self.test_tags[2] + " AND " + self.test_tags[1]
-        result = get_names_matching_bool(expression)
+        result = get_names_matching_bool(expression.split())
         self.assertSetEqual(result, set([]))
 
         # expression consists of one OR
         expression = self.test_tags[2] + " OR " + self.test_tags[1]
-        result = get_names_matching_bool(expression)
+        result = get_names_matching_bool(expression.split())
         self.assertSetEqual(result, set(self.file_names))
 
         # expression consists of one NOT
         expression = "NOT " + self.test_tags[0]
-        result = get_names_matching_bool(expression)
+        result = get_names_matching_bool(expression.split())
         self.assertSetEqual(result, set(self.file_names[1:]))
 
         # More complex expressions with AND, NOT, OR
         expression = self.test_tags[1] + " AND NOT " + self.test_tags[0]
-        result = get_names_matching_bool(expression)
+        result = get_names_matching_bool(expression.split())
         self.assertSetEqual(result, set([self.file_names[1]]))
 
         # This one relies on correct ordering.
         expression = self.test_tags[1] + " OR " + self.test_tags[2] + " AND " + self.test_tags[0]
-        result = get_names_matching_bool(expression)
+        result = get_names_matching_bool(expression.split())
         self.assertSetEqual(result, set([self.file_names[0]]))
 
         # Expressions with parenthesis
 
         expression = "( " + self.test_tags[0] + " )"
-        result = get_names_matching_bool(expression)
+        result = get_names_matching_bool(expression.split())
         self.assertSetEqual(result, set([self.file_names[0]]))
 
         expression = self.test_tags[1] + " OR " + self.test_tags[2] + " AND " + self.test_tags[0] + " )"
         with self.assertRaises(tagger.TaggerException):
-            result = get_names_matching_bool(expression)
+            result = get_names_matching_bool(expression.split())
 
         expression = self.test_tags[1] + " OR ( " + self.test_tags[2] + " AND " + self.test_tags[0] + " )"
-        result = get_names_matching_bool(expression)
+        result = get_names_matching_bool(expression.split())
         self.assertSetEqual(result, set(self.file_names[:2]))
 
     def tearDown(self):
