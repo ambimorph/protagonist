@@ -9,6 +9,14 @@ class Tagger():
         self.tag_directory = os.path.join(self.dict_directory, "tags")
         self.truenames_directory = os.path.join(self.dict_directory, "truenames")
         self.create_tagsystem()
+        self.OPS = {
+            "AND": (set.intersection, 2),
+            "OR": (set.union, 2),
+            "NOT": ((lambda x: set.difference(self.universe(), x)), 1)
+            }
+
+    def universe(self):
+        return set(os.listdir(self.truenames_directory))
 
     def create_tagsystem(self):
 
@@ -91,6 +99,40 @@ class Tagger():
                 return f.read()
 
         return set(map(name, file_set))
+
+    def parse(self, bool_string):
+        """
+
+        """
+        bool_list = bool_string.split()
+        result_stack = []
+        operator_stack = []
+
+
+        def apply(op):
+            function = self.OPS[op][0]
+            arity = self.OPS[op][1]
+            args = []
+            for i in range(arity):
+                args.append(result_stack.pop())
+            return function(*args)
+
+        for el in bool_list:
+
+            if el in self.OPS:
+                if operator_stack == [] or el == "NOT":
+                    operator_stack.append(el)
+                else:
+                    operator = operator_stack.pop()
+                    result_stack.append(apply(operator))
+            else:
+                result_stack.append(self.tag_ls(el))
+
+        while operator_stack != []:
+            operator = operator_stack.pop()
+            result_stack.append(apply(operator))
+
+        return result_stack.pop()
 
 class TaggerException(Exception):
     pass

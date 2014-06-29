@@ -120,6 +120,45 @@ class TaggerTest(unittest.TestCase):
         names = self.tagger.get_names(ids)
         self.assertSetEqual(names, set(self.file_names)), names
 
+    def test_parse(self):
+
+        for i in range(len(self.file_names)):
+            self.tagger.tag_file(self.file_names[i], self.test_tags[i])
+        self.tagger.tag_file(self.file_names[0], self.test_tags[1])
+
+        def get_names_matching_bool(expression):
+            return self.tagger.get_names(self.tagger.parse(expression))
+
+        # Now all files are tagged with the corresponding tag, and
+        # file0 is also tagged with tag1
+
+        # expression is a single term
+        result = get_names_matching_bool(self.test_tags[0])
+        self.assertSetEqual(result, set([self.file_names[0]]))
+
+        # expression consists of one AND
+        expression = self.test_tags[0] + " AND " + self.test_tags[1]
+        result = get_names_matching_bool(expression)
+        self.assertSetEqual(result, set([self.file_names[0]]))
+
+        expression = self.test_tags[2] + " AND " + self.test_tags[1]
+        result = get_names_matching_bool(expression)
+        self.assertSetEqual(result, set([]))
+
+        # expression consists of one OR
+        expression = self.test_tags[2] + " OR " + self.test_tags[1]
+        result = get_names_matching_bool(expression)
+        self.assertSetEqual(result, set(self.file_names))
+
+        # expression consists of one NOT
+        expression = "NOT " + self.test_tags[0]
+        result = get_names_matching_bool(expression)
+        self.assertSetEqual(result, set(self.file_names[1:]))
+
+        # More complex expressions with AND, NOT, OR
+        expression = self.test_tags[1] + " AND NOT " + self.test_tags[0]
+        result = get_names_matching_bool(expression)
+        self.assertSetEqual(result, set([self.file_names[1]]))
 
     def tearDown(self):
 
