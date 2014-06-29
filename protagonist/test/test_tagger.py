@@ -177,7 +177,7 @@ class TaggerTest(unittest.TestCase):
 
         expression = self.test_tags[1] + " OR ( " + self.test_tags[2] + " AND " + self.test_tags[0] + " )"
         result = get_names_matching_bool(expression)
-        self.assertSetEqual(result, set([self.file_names[:1]]))
+        self.assertSetEqual(result, set(self.file_names[:2]))
 
     def tearDown(self):
 

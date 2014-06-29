@@ -124,10 +124,17 @@ class Tagger():
 
         for el in bool_list:
 
-            if el in self.OPS or el in self.parentheses:
-                if operator_stack == [] or el in ["NOT", "("]:
+            if el in self.OPS:
+                if operator_stack == [] or operator_stack[-1] == "(" or el == "NOT":
                     operator_stack.append(el)
-                elif el == ")":
+                else:
+                    operator = operator_stack.pop()
+                    result_stack.append(apply(operator))
+            elif el in self.parentheses:
+                if el == "(":
+                    operator_stack.append(el)
+                else:
+                    assert el == ")", el
                     try:
                         while operator_stack[-1] != "(":
                             operator = operator_stack.pop()
@@ -135,9 +142,6 @@ class Tagger():
                         operator_stack.pop()
                     except IndexError, e:
                         raise TaggerException("Unbalanced parantheses.")
-                else:
-                    operator = operator_stack.pop()
-                    result_stack.append(apply(operator))
             else:
                 result_stack.append(self.tag_ls(el))
 
