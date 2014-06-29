@@ -160,6 +160,11 @@ class TaggerTest(unittest.TestCase):
         result = get_names_matching_bool(expression)
         self.assertSetEqual(result, set([self.file_names[1]]))
 
+        # This one relies on correct ordering.
+        expression = self.test_tags[1] + " OR " + self.test_tags[2] + " AND " + self.test_tags[0]
+        result = get_names_matching_bool(expression)
+        self.assertSetEqual(result, set([self.file_names[0]]))
+
     def tearDown(self):
 
         shutil.rmtree(self.sandbox)
