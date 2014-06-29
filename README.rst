@@ -5,6 +5,10 @@
 Protagonist implements a *tagsystem*: it is used for tagging files non-hierarchically, so that they can be found with boolean queries.
 Protagonist interfaces a particular filesystem structure (described below) that represents a tagsystem through the use of special directories and links.
 
+A major design constraint of this project is to provide seamless compatibility with Tahoe-LAFS_ backup storage.
+Tahoe-LAFS backup will take a directory and recursively back up the files in every subdirectory.
+It does not have a native representation of symbolic links.
+
 *The remainder of this document is an on-going design specification that I am designing as I go, in tandem with the implementation.*
 
 Structure
@@ -22,9 +26,11 @@ Why hard links?
 
 Protagonist could be implemented with symbolic links, but hard links were chosen for the following reasons:
 
-* For compatibility with `Tahoe-LAFS <www.tahoe-lafs.org>`_ backup storage.
+* For compatibility with Tahoe-LAFS_  backup storage.
 * To enable reference counting and tracking logic.
 * To reduce layers of indirection.
+
+.. _`Tahoe-LAFS`: www.tahoe-lafs.org
 
 Unique identifiers
 ------------------
