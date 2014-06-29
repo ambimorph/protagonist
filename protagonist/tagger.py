@@ -90,7 +90,7 @@ class Tagger():
             with open(os.path.join(self.truenames_directory, file_id), 'r') as f:
                 return f.read()
 
-        return map(name, file_set)
-            
+        return set(map(name, file_set))
+
 class TaggerException(Exception):
     pass

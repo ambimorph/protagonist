@@ -118,7 +118,7 @@ class TaggerTest(unittest.TestCase):
 
         ids = map(self.tagger.make_file_id, self.file_names)
         names = self.tagger.get_names(ids)
-        self.assertListEqual(names, self.file_names), names
+        self.assertSetEqual(names, set(self.file_names)), names
 
 
     def tearDown(self):
