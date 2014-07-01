@@ -101,6 +101,15 @@ class Tagger():
         else:
             return set([])
 
+    def file_ls_tags(self, file_name):
+
+        file_id = self.make_file_id(file_name)
+        tag_set = set([])
+        for tag_directory in os.listdir(self.tags_directory):
+            if os.path.exists(self.path_join_tag(tag_directory, file_name)):
+                tag_set.add(os.path.basename(tag_directory))
+        return tag_set
+
     def get_names(self, file_set):
 
         def name(file_id):

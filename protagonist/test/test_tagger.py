@@ -111,6 +111,14 @@ class TaggerTest(unittest.TestCase):
         tagged = self.tagger.tag_ls(self.test_tags[0])
         self.assertSetEqual(tagged, set(map(self.tagger.make_file_id, self.file_names))), tagged
 
+    def test_file_ls_tags(self):
+
+       for tag in self.test_tags:
+            self.tagger.tag_file(self.file_names[0], tag)
+
+       tags = self.tagger.file_ls_tags(self.file_names[0])
+       self.assertSetEqual(tags, set(self.test_tags)), tags
+
     def test_get_names(self):
 
         for file_name in self.file_names:
