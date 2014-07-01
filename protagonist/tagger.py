@@ -81,6 +81,10 @@ class Tagger():
         if os.listdir(self.path_join_tag(tag)) == []:
             os.rmdir(self.path_join_tag(tag))
 
+        # If the file has no more tags, remove it from truenames
+        if self.file_ls_tags(file_name) == set([]):
+            os.remove(self.path_join_truenames(self.make_file_id(file_name)))
+
     def delete_tag(self, tag):
 
         # TODO: change this to untag_file every file in here, to trigger removal from truenames when appropriate.

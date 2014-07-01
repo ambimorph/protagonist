@@ -80,15 +80,24 @@ class TaggerTest(unittest.TestCase):
         with self.assertRaises(tagger.TaggerException):
             self.tagger.untag_file(self.duplicate, self.test_tags[0])
 
+        # tag all with tag0, then untag f0.
         for file_name in self.file_names:
             self.tagger.tag_file(file_name, self.test_tags[0])
         directory_path = self.tagger.path_join_tag(self.test_tags[0])
         self.tagger.untag_file(self.file_names[0], self.test_tags[0])
 
+        # make sure f0 is not in the tag0 directory
         self.assertFalse(os.path.exists(directory_path + "983ceba2afea8694cc933336b27b907f90c53a88.txt"), msg = os.listdir(directory_path))
+
+        # make sure that f0 is no longer in truenames
+        tags = self.tagger.file_ls_tags(self.file_names[0])
+        self.assertSetEqual(tags, set([])), tags
+        self.assertFalse(os.path.exists(self.tagger.path_join_truenames("983ceba2afea8694cc933336b27b907f90c53a88.txt")), msg = os.listdir(self.tagger.truenames_directory))
+        # make sure the other files are still in tag0
         for file_id in ["ace9b3802f7beb30d6cc569dea9a379102d5982e.txt", "fd92e513d00441bfdcce4a6d3878ea4d97e2b684.txt"]:
             self.assertTrue(os.path.exists(os.path.join(directory_path, file_id)), msg = os.listdir(directory_path))
 
+        # make sure after all files untagged, tag0 dir is removed.
         for i in range(2):
             self.tagger.untag_file(self.file_names[i+1], self.test_tags[0])
         self.assertFalse(os.path.exists(directory_path), msg = os.listdir(self.tagger.tags_directory))
@@ -113,11 +122,15 @@ class TaggerTest(unittest.TestCase):
 
     def test_file_ls_tags(self):
 
-       for tag in self.test_tags:
+        for tag in self.test_tags:
             self.tagger.tag_file(self.file_names[0], tag)
 
-       tags = self.tagger.file_ls_tags(self.file_names[0])
-       self.assertSetEqual(tags, set(self.test_tags)), tags
+        tags = self.tagger.file_ls_tags(self.file_names[0])
+        self.assertSetEqual(tags, set(self.test_tags)), tags
+
+        self.tagger.untag_file(self.file_names[0], self.test_tags[0])
+        tags = self.tagger.file_ls_tags(self.file_names[0])
+        self.assertSetEqual(tags, set(self.test_tags[1:])), tags
 
     def test_get_names(self):
 
