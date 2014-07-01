@@ -68,8 +68,8 @@ class TaggerTest(unittest.TestCase):
         expected_file_id = "983ceba2afea8694cc933336b27b907f90c53a88.txt"
         directory_path = self.tagger.path_join_tag(self.test_tags[0])
         self.assertTrue(os.path.exists(os.path.join(directory_path, expected_file_id)), msg = os.listdir(directory_path))
-        self.assertTrue(os.path.exists(os.path.join(self.tagger.truenames_directory, expected_file_id)), msg = os.listdir(self.tagger.truenames_directory))
-        contents = open(os.path.join(self.tagger.truenames_directory, expected_file_id), 'r').read()
+        self.assertTrue(os.path.exists(self.tagger.path_join_truenames(expected_file_id)), msg = os.listdir(self.tagger.truenames_directory))
+        contents = open(self.tagger.path_join_truenames(expected_file_id), 'r').read()
         self.assertEquals(contents, self.file_names[0]), contents
 
     def test_untag_file(self):

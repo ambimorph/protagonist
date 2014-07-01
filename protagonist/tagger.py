@@ -19,6 +19,9 @@ class Tagger():
     def path_join_tag(self, *args):
         return os.path.join(self.tag_directory, *args)
 
+    def path_join_truenames(self, *args):
+        return os.path.join(self.truenames_directory, *args)
+
     def universe(self):
         return set(os.listdir(self.truenames_directory))
 
@@ -51,7 +54,7 @@ class Tagger():
         self.add_tag(tag)
         file_id = self.make_file_id(file_name)
         os.link(file_name, self.path_join_tag(tag, file_id))
-        with open(os.path.join(self.truenames_directory, file_id), 'w') as f:
+        with open(self.path_join_truenames(file_id), 'w') as f:
             f.write(os.path.abspath(file_name))
 
     def get_inode(self, file_name):
@@ -101,7 +104,7 @@ class Tagger():
     def get_names(self, file_set):
 
         def name(file_id):
-            with open(os.path.join(self.truenames_directory, file_id), 'r') as f:
+            with open(self.path_join_truenames(file_id), 'r') as f:
                 return f.read()
 
         return set(map(name, file_set))
