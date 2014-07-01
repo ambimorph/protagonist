@@ -106,7 +106,7 @@ class Tagger():
         file_id = self.make_file_id(file_name)
         tag_set = set([])
         for tag_directory in os.listdir(self.tags_directory):
-            if os.path.exists(self.path_join_tag(tag_directory, file_name)):
+            if os.path.exists(self.path_join_tag(tag_directory, file_id)):
                 tag_set.add(os.path.basename(tag_directory))
         return tag_set
 
