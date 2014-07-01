@@ -38,11 +38,11 @@ class TaggerTest(unittest.TestCase):
 
     def test_create_tagsystem(self):
 
-        self.assertTrue(os.path.exists(self.tagger.tag_directory))
+        self.assertTrue(os.path.exists(self.tagger.tags_directory))
 
         # Also check for idempotence
         self.tagger.create_tagsystem()
-        self.assertTrue(os.path.exists(self.tagger.tag_directory))
+        self.assertTrue(os.path.exists(self.tagger.tags_directory))
         self.assertTrue(os.path.exists(self.tagger.truenames_directory))
 
     def test_add_tag(self):
@@ -91,16 +91,16 @@ class TaggerTest(unittest.TestCase):
 
         for i in range(2):
             self.tagger.untag_file(self.file_names[i+1], self.test_tags[0])
-        self.assertFalse(os.path.exists(directory_path), msg = os.listdir(self.tagger.tag_directory))
+        self.assertFalse(os.path.exists(directory_path), msg = os.listdir(self.tagger.tags_directory))
 
     def test_delete_tag(self):
 
         directory_path = self.tagger.path_join_tag(self.test_tags[0])
         self.tagger.delete_tag(self.test_tags[0])
-        self.assertFalse(os.path.exists(directory_path), msg = os.listdir(self.tagger.tag_directory))
+        self.assertFalse(os.path.exists(directory_path), msg = os.listdir(self.tagger.tags_directory))
         self.tagger.tag_file(self.file_names[0], self.test_tags[0])
         self.tagger.delete_tag(self.test_tags[0])
-        self.assertFalse(os.path.exists(directory_path), msg = os.listdir(self.tagger.tag_directory))
+        self.assertFalse(os.path.exists(directory_path), msg = os.listdir(self.tagger.tags_directory))
 
     def test_tag_ls(self):
 

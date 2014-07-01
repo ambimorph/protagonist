@@ -6,7 +6,7 @@ class Tagger():
     def __init__(self, base_directory=os.getcwd()):
 
         self.dict_directory = os.path.abspath(os.path.join(base_directory, ".protagonist"))
-        self.tag_directory = os.path.join(self.dict_directory, "tags")
+        self.tags_directory = os.path.join(self.dict_directory, "tags")
         self.truenames_directory = os.path.join(self.dict_directory, "truenames")
         self.create_tagsystem()
         self.OPS = {
@@ -17,7 +17,7 @@ class Tagger():
         self.parentheses = ["(", ")"]
 
     def path_join_tag(self, *args):
-        return os.path.join(self.tag_directory, *args)
+        return os.path.join(self.tags_directory, *args)
 
     def path_join_truenames(self, *args):
         return os.path.join(self.truenames_directory, *args)
@@ -29,7 +29,7 @@ class Tagger():
 
         try:
             os.mkdir(self.dict_directory)
-            os.mkdir(self.tag_directory)
+            os.mkdir(self.tags_directory)
             os.mkdir(self.truenames_directory)
         except OSError, e:
             pass
