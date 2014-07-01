@@ -16,6 +16,9 @@ class Tagger():
             }
         self.parentheses = ["(", ")"]
 
+    def path_join_tag(self, *args):
+        return os.path.join(self.tag_directory, *args)
+
     def universe(self):
         return set(os.listdir(self.truenames_directory))
 
@@ -31,7 +34,7 @@ class Tagger():
     def add_tag(self, tag):
 
         try:
-            os.mkdir(os.path.join(self.tag_directory, tag))
+            os.mkdir(self.path_join_tag(tag))
         except OSError, e:
             pass
 
@@ -47,7 +50,7 @@ class Tagger():
 
         self.add_tag(tag)
         file_id = self.make_file_id(file_name)
-        os.link(file_name, os.path.join(self.tag_directory, tag, file_id))
+        os.link(file_name, self.path_join_tag(tag, file_id))
         with open(os.path.join(self.truenames_directory, file_id), 'w') as f:
             f.write(os.path.abspath(file_name))
 
@@ -56,7 +59,7 @@ class Tagger():
 
     def untag_file(self, file_name, tag):
 
-        tagged_file_path = os.path.join(self.tag_directory, tag, self.make_file_id(file_name))
+        tagged_file_path = self.path_join_tag(tag, self.make_file_id(file_name))
 
         # Assert a copy of the file is tagged with tag
         try:
@@ -72,13 +75,15 @@ class Tagger():
         os.remove(tagged_file_path)
 
         # If the tag directory is now empty, remove it.
-        if os.listdir(os.path.join(self.tag_directory, tag)) == []:
-            os.rmdir(os.path.join(self.tag_directory, tag))
+        if os.listdir(self.path_join_tag(tag)) == []:
+            os.rmdir(self.path_join_tag(tag))
 
     def delete_tag(self, tag):
 
+        # TODO: change this to untag_file every file in here, to trigger removal from truenames when appropriate.
+
         try:
-            shutil.rmtree(os.path.join(self.tag_directory, tag))
+            shutil.rmtree(self.path_join_tag(tag))
         except OSError, e:
             pass
 
@@ -87,7 +92,7 @@ class Tagger():
         Returns the set of file IDs that match a given tag.
         """
 
-        this_tag_path = os.path.join(self.tag_directory, tag)
+        this_tag_path = self.path_join_tag(tag)
         if os.path.exists(this_tag_path):
             return set(os.listdir(this_tag_path))
         else:
