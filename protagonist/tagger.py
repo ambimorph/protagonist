@@ -90,7 +90,12 @@ class Tagger():
         # TODO: change this to untag_file every file in here, to trigger removal from truenames when appropriate.
 
         try:
-            shutil.rmtree(self.path_join_tag(tag))
+#            shutil.rmtree(self.path_join_tag(tag))
+            path = self.path_join_tag(tag)
+            file_names = self.get_names(os.listdir(path))
+            for file_name in file_names:
+                self.untag_file(file_name, tag)
+            os.rmdir(path)
         except OSError, e:
             pass
 

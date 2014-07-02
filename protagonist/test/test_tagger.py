@@ -110,6 +110,7 @@ class TaggerTest(unittest.TestCase):
         self.tagger.tag_file(self.file_names[0], self.test_tags[0])
         self.tagger.delete_tag(self.test_tags[0])
         self.assertFalse(os.path.exists(directory_path), msg = os.listdir(self.tagger.tags_directory))
+        self.assertFalse(os.path.exists(self.tagger.path_join_truenames("983ceba2afea8694cc933336b27b907f90c53a88.txt")), msg = os.listdir(self.tagger.truenames_directory))
 
     def test_tag_ls(self):
 
