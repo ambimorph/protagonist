@@ -50,7 +50,7 @@ Using hard links will have repercussions for deleting files that have been tagge
 True Names
 ----------
 
-A potential problem with using unique IDs is that now the result of a `tagls` is not recognisable to the user.
+A potential problem with using unique IDs is that now the result of a *tagls* is not recognisable to the user.
 This motivates some kind of index.
 
 Part of the goals of this project is to use the directory structure of the underlying filesystem as a primitive that can be used as a data structure.
