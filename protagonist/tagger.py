@@ -121,6 +121,16 @@ class Tagger():
         for tag in self.file_ls_tags(file_name):
             self.untag_file(file_name, tag)
 
+    def mv_file(self, old_name, new_name):
+
+        new_file_id = self.make_file_id(new_name)
+        for tag in self.file_ls_tags(old_name):
+            self.untag_file(old_name, tag)
+            self.tag_file(new_name, tag)
+
+        with open(self.path_join_truenames(new_file_id), 'w') as f:
+            f.write(os.path.abspath(new_name))
+
     def get_names(self, file_set):
 
         def name(file_id):

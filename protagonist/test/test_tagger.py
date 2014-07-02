@@ -150,6 +150,32 @@ class TaggerTest(unittest.TestCase):
         self.assertSetEqual(tags, set([])), tags
         self.assertFalse(os.path.exists(self.tagger.path_join_truenames("983ceba2afea8694cc933336b27b907f90c53a88.txt")), msg = os.listdir(self.tagger.truenames_directory))
 
+    def test_mv_file(self):
+
+        self.tagger.tag_file(self.file_names[0], self.test_tags[0])
+
+        # move it, check the truename is still there, but point
+        # differently, and the tags still hold.
+        new_name = os.path.join(self.sandbox, "foo.txt")
+        shutil.copy(self.file_names[0], new_name)
+        self.tagger.mv_file(self.file_names[0], new_name)
+        self.assertTrue(os.path.exists(self.tagger.path_join_truenames("983ceba2afea8694cc933336b27b907f90c53a88.txt")), msg = os.listdir(self.tagger.truenames_directory))
+        with open(self.tagger.path_join_truenames("983ceba2afea8694cc933336b27b907f90c53a88.txt"), 'r') as f:
+            path = f.read()
+            self.assertEqual(path, new_name), path
+        tags = self.tagger.file_ls_tags(new_name)
+        self.assertSetEqual(tags, set([self.test_tags[0]])), tags
+        # move it again, this time the id needs a new extension
+        new_new_name = os.path.join(self.sandbox, "foo.rst")
+        shutil.copy(self.file_names[0], new_new_name)
+        self.tagger.mv_file(new_name, new_new_name)
+        self.assertFalse(os.path.exists(self.tagger.path_join_truenames("983ceba2afea8694cc933336b27b907f90c53a88.txt")), msg = os.listdir(self.tagger.truenames_directory))
+        self.assertTrue(os.path.exists(self.tagger.path_join_truenames("983ceba2afea8694cc933336b27b907f90c53a88.rst")), msg = os.listdir(self.tagger.truenames_directory))
+
+        tags = self.tagger.file_ls_tags(new_name)
+        self.assertSetEqual(tags, set([])), tags
+        tags = self.tagger.file_ls_tags(new_new_name)
+        self.assertSetEqual(tags, set([self.test_tags[0]])), tags
 
     def test_parse(self):
 
