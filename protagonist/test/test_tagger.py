@@ -36,6 +36,8 @@ class TaggerTest(unittest.TestCase):
         self.duplicate = os.path.join(self.sandbox, "dup.txt")
         insert_contents(self.duplicate, "foo")
 
+        self.ids = map(self.tagger.make_file_id, self.file_names)
+
     def test_create_tagsystem(self):
 
         self.assertTrue(os.path.exists(self.tagger.tags_directory))
@@ -65,7 +67,7 @@ class TaggerTest(unittest.TestCase):
     def test_tag_file(self):
 
         self.tagger.tag_file(self.file_names[0], self.test_tags[0])
-        expected_file_id = "983ceba2afea8694cc933336b27b907f90c53a88.txt"
+        expected_file_id = self.ids[0]
         directory_path = self.tagger.path_join_tag(self.test_tags[0])
         self.assertTrue(os.path.exists(os.path.join(directory_path, expected_file_id)), msg = os.listdir(directory_path))
         self.assertTrue(os.path.exists(self.tagger.path_join_truenames(expected_file_id)), msg = os.listdir(self.tagger.truenames_directory))
@@ -87,14 +89,14 @@ class TaggerTest(unittest.TestCase):
         self.tagger.untag_file(self.file_names[0], self.test_tags[0])
 
         # make sure f0 is not in the tag0 directory
-        self.assertFalse(os.path.exists(directory_path + "983ceba2afea8694cc933336b27b907f90c53a88.txt"), msg = os.listdir(directory_path))
+        self.assertFalse(os.path.exists(directory_path + self.ids[0]), msg = os.listdir(directory_path))
 
         # make sure that f0 is no longer in truenames
         tags = self.tagger.file_ls_tags(self.file_names[0])
         self.assertSetEqual(tags, set([])), tags
-        self.assertFalse(os.path.exists(self.tagger.path_join_truenames("983ceba2afea8694cc933336b27b907f90c53a88.txt")), msg = os.listdir(self.tagger.truenames_directory))
+        self.assertFalse(os.path.exists(self.tagger.path_join_truenames(self.ids[0])), msg = os.listdir(self.tagger.truenames_directory))
         # make sure the other files are still in tag0
-        for file_id in ["ace9b3802f7beb30d6cc569dea9a379102d5982e.txt", "fd92e513d00441bfdcce4a6d3878ea4d97e2b684.txt"]:
+        for file_id in self.ids[1:]:
             self.assertTrue(os.path.exists(os.path.join(directory_path, file_id)), msg = os.listdir(directory_path))
 
         # make sure after all files untagged, tag0 dir is removed.
@@ -110,7 +112,7 @@ class TaggerTest(unittest.TestCase):
         self.tagger.tag_file(self.file_names[0], self.test_tags[0])
         self.tagger.delete_tag(self.test_tags[0])
         self.assertFalse(os.path.exists(directory_path), msg = os.listdir(self.tagger.tags_directory))
-        self.assertFalse(os.path.exists(self.tagger.path_join_truenames("983ceba2afea8694cc933336b27b907f90c53a88.txt")), msg = os.listdir(self.tagger.truenames_directory))
+        self.assertFalse(os.path.exists(self.tagger.path_join_truenames(self.ids[0])), msg = os.listdir(self.tagger.truenames_directory))
 
     def test_tag_ls(self):
 
@@ -148,7 +150,7 @@ class TaggerTest(unittest.TestCase):
         self.tagger.rm_file(self.file_names[0])
         tags = self.tagger.file_ls_tags(self.file_names[0])
         self.assertSetEqual(tags, set([])), tags
-        self.assertFalse(os.path.exists(self.tagger.path_join_truenames("983ceba2afea8694cc933336b27b907f90c53a88.txt")), msg = os.listdir(self.tagger.truenames_directory))
+        self.assertFalse(os.path.exists(self.tagger.path_join_truenames(self.ids[0])), msg = os.listdir(self.tagger.truenames_directory))
 
     def test_mv_file(self):
 
@@ -159,8 +161,8 @@ class TaggerTest(unittest.TestCase):
         new_name = os.path.join(self.sandbox, "foo.txt")
         shutil.copy(self.file_names[0], new_name)
         self.tagger.mv_file(self.file_names[0], new_name)
-        self.assertTrue(os.path.exists(self.tagger.path_join_truenames("983ceba2afea8694cc933336b27b907f90c53a88.txt")), msg = os.listdir(self.tagger.truenames_directory))
-        with open(self.tagger.path_join_truenames("983ceba2afea8694cc933336b27b907f90c53a88.txt"), 'r') as f:
+        self.assertTrue(os.path.exists(self.tagger.path_join_truenames(self.ids[0])), msg = os.listdir(self.tagger.truenames_directory))
+        with open(self.tagger.path_join_truenames(self.ids[0]), 'r') as f:
             path = f.read()
             self.assertEqual(path, new_name), path
         tags = self.tagger.file_ls_tags(new_name)
@@ -169,8 +171,8 @@ class TaggerTest(unittest.TestCase):
         new_new_name = os.path.join(self.sandbox, "foo.rst")
         shutil.copy(self.file_names[0], new_new_name)
         self.tagger.mv_file(new_name, new_new_name)
-        self.assertFalse(os.path.exists(self.tagger.path_join_truenames("983ceba2afea8694cc933336b27b907f90c53a88.txt")), msg = os.listdir(self.tagger.truenames_directory))
-        self.assertTrue(os.path.exists(self.tagger.path_join_truenames("983ceba2afea8694cc933336b27b907f90c53a88.rst")), msg = os.listdir(self.tagger.truenames_directory))
+        self.assertFalse(os.path.exists(self.tagger.path_join_truenames(self.ids[0])), msg = os.listdir(self.tagger.truenames_directory))
+        self.assertTrue(os.path.exists(self.tagger.path_join_truenames(self.tagger.make_file_id(new_new_name))), msg = os.listdir(self.tagger.truenames_directory))
 
         tags = self.tagger.file_ls_tags(new_name)
         self.assertSetEqual(tags, set([])), tags
