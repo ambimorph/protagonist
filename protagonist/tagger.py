@@ -87,10 +87,7 @@ class Tagger():
 
     def delete_tag(self, tag):
 
-        # TODO: change this to untag_file every file in here, to trigger removal from truenames when appropriate.
-
         try:
-#            shutil.rmtree(self.path_join_tag(tag))
             path = self.path_join_tag(tag)
             file_names = self.get_names(os.listdir(path))
             for file_name in file_names:
