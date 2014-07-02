@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from protagonist import tagger
-import os, sys
+import os, sys, shutil
 
 cwd = os.getcwd()
 t = tagger.Tagger(cwd)
@@ -14,8 +14,13 @@ elif sys.argv[1] == "add":
     tags = sys.argv[3:]
     for tag in tags:
         t.tag_file(file_name, tag)
-    
-
-    
-
-
+elif sys.argv[1] == "rm":
+    file_name = os.path.abspath(sys.argv[2])
+    t.rm_file(file_name)
+    os.remove(file_name)
+elif sys.argv[1] == "mv":
+    file_name = sys.argv[2]
+    new_name = sys.argv[3]
+    shutil.copy(file_name, new_name)
+    t.mv_file(file_name, new_name)
+    os.remove(file_name)
