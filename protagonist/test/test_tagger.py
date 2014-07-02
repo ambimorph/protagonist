@@ -1,7 +1,6 @@
 from protagonist import tagger
 import unittest, os, shutil
 
-
 class TaggerTest(unittest.TestCase):
 
     def setUp(self):
