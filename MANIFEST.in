@@ -1,0 +1,2 @@
+include *.rst versioneer.py
+global-exclude *~ *.pyc
