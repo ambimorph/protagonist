@@ -116,6 +116,11 @@ class Tagger():
                 tag_set.add(os.path.basename(tag_directory))
         return tag_set
 
+    def rm_file(self, file_name):
+
+        for tag in self.file_ls_tags(file_name):
+            self.untag_file(file_name, tag)
+
     def get_names(self, file_set):
 
         def name(file_id):

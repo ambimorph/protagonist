@@ -142,6 +142,15 @@ class TaggerTest(unittest.TestCase):
         names = self.tagger.get_names(ids)
         self.assertSetEqual(names, set(self.file_names)), names
 
+    def test_rm_file(self):
+
+        self.tagger.tag_file(self.file_names[0], self.test_tags[0])
+        self.tagger.rm_file(self.file_names[0])
+        tags = self.tagger.file_ls_tags(self.file_names[0])
+        self.assertSetEqual(tags, set([])), tags
+        self.assertFalse(os.path.exists(self.tagger.path_join_truenames("983ceba2afea8694cc933336b27b907f90c53a88.txt")), msg = os.listdir(self.tagger.truenames_directory))
+
+
     def test_parse(self):
 
         for i in range(len(self.file_names)):
