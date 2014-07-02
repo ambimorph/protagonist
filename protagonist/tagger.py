@@ -54,6 +54,7 @@ class Tagger():
         self.add_tag(tag)
         file_id = self.make_file_id(file_name)
         os.link(file_name, self.path_join_tag(tag, file_id))
+        # TODO check if it is there first?
         with open(self.path_join_truenames(file_id), 'w') as f:
             f.write(os.path.abspath(file_name))
 
