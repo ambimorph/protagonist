@@ -16,6 +16,11 @@ def main():
         tags = sys.argv[3:]
         for tag in tags:
             t.tag_file(file_name, tag)
+    elif sys.argv[1] == "untag":
+        file_name = sys.argv[2]
+        tags = sys.argv[3:]
+        for tag in tags:
+            t.untag_file(file_name, tag)
     elif sys.argv[1] == "rmtag":
         tag = sys.argv[2]
         t.delete_tag(tag)
