@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Protagonist: Links, and Boolean Expressions &mdash; Protagonist 2014.07.03 documentation</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/styles.css" type="text/css" />
+    <link rel="stylesheet" href="_static/single.css" type="text/css" />
+    
+
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2014.07.03',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/common.js"></script>
+    <script type="text/javascript" src="_static/slides.js"></script>
+    <script type="text/javascript" src="_static/sync.js"></script>
+    <script type="text/javascript" src="_static/controller.js"></script>
+    <script type="text/javascript" src="_static/init.js"></script>
+    
+    <link rel="top" title="Protagonist 2014.07.03 documentation" href="index.html" /> 
+  </head>
+  <body>
+
+<section
+   id="slide_container"
+   class='slides layout-regular'>
+
+
+  <article class="slide level-1" id="protagonist-links-and-boolean-expressions">
+<h1>Protagonist: Links, and Boolean Expressions</h1>
+<p>Thursday, June 3rd, 2014</p>
+
+</article>
+<article class="slide level-2" id="overview">
+<h2>Overview</h2>
+<ul class="simple">
+<li>The role of links</li>
+<li>A demo</li>
+<li>Parsing Boolean expressions</li>
+</ul>
+
+</article>
+<article class="slide level-2" id="structure">
+<h2>Structure</h2>
+<p>Recall the structure of the tagsystem:</p>
+<div class="code highlight-python"><div class="highlight"><pre>.
+├── goodbye.txt
+├── happy_birthday.txt
+├── hello.txt
+├── hi.txt
+└── .protagonist
+    ├── tags
+    │   ├── enter
+    │   │   ├── 07b26f762733aefe9456cabd0ec4bd85be19ff3f.txt
+    │   │   └── d2f799bb9610968a2efa8f7682d5f2f1d45163d7.txt
+    │   └── exit
+    │       └── 875e88d3892f23ec5e90c6d13718edfb3310447e.txt
+    └── truenames
+        ├── 07b26f762733aefe9456cabd0ec4bd85be19ff3f.txt
+        ├── 875e88d3892f23ec5e90c6d13718edfb3310447e.txt
+        └── d2f799bb9610968a2efa8f7682d5f2f1d45163d7.txt
+</pre></div>
+</div>
+
+</article>
+<article class="slide level-2" id="links">
+<h2>Links</h2>
+<ul class="simple">
+<li>Hard links are conceptually easy.<ul>
+<li>Hard linked files <strong>are the same file</strong>.</li>
+</ul>
+</li>
+<li>Symlinks are a bit different.<ul>
+<li>In unix, &quot;Everything is a file&quot;.</li>
+<li>A symlink is a file, whose contents are the text of the link.</li>
+<li>Also, *nix <em>labels</em> this file as being a symbolic link.</li>
+</ul>
+</li>
+</ul>
+
+</article>
+<article class="slide level-2" id="id1">
+<h2>Links</h2>
+<div class="code highlight-python"><div class="highlight"><pre>$ ln hi.txt hard.txt
+$ ln -s hi.txt soft.txt
+$ stat hi.txt | head -n 3
+
+File: `hi.txt&#39;
+Size: 3               Blocks: 8          IO Block: 4096   regular file
+Device: 802h/2050d      Inode: 2299470     Links: 2
+
+$ stat hard.txt | head -n 3
+
+File: `hard.txt&#39;
+Size: 3               Blocks: 8          IO Block: 4096   regular file
+Device: 802h/2050d      Inode: 2299470     Links: 2
+
+$ stat soft.txt | head -n 3
+
+File: `soft.txt&#39; -&gt; `hi.txt&#39;
+Size: 6               Blocks: 0          IO Block: 4096   symbolic link
+Device: 802h/2050d      Inode: 2301113     Links: 1
+</pre></div>
+</div>
+
+</article>
+<article class="slide level-2" id="id2">
+<h2>Links</h2>
+<ul class="simple">
+<li>Almost all system calls automatically follow symbolic links:</li>
+</ul>
+<div class="code highlight-python"><div class="highlight"><pre>$ cat hi.txt
+hi
+
+$ cat soft.txt
+hi
+
+$ readlink soft.txt
+hi.txt
+</pre></div>
+</div>
+
+</article>
+<article class="slide level-2" id="protagonist-tags">
+<h2>Protagonist tags</h2>
+<ul>
+<li><p class="first"><em>tags</em> are hard links.</p>
+<p>This allows direct access to the file contents through the tagsystem.</p>
+<p>Specifically, if I run <cite>tahoe backup .protagonist</cite>, it backs up the actual files linked into the subdirectories.</p>
+</li>
+</ul>
+
+</article>
+<article class="slide level-2" id="protagonist-truenames">
+<h2>Protagonist truenames</h2>
+<ul>
+<li><p class="first"><em>truenames</em> are just like symbolic links, but I haven't told the filesystem.</p>
+<div class="code highlight-python"><div class="highlight"><pre>$ cat .protagonist/truenames/07b26f762733aefe9456cabd0ec4bd85be19ff3f.txt
+
+/home/amber/play/hi.txt
+</pre></div>
+</div>
+<p>Running <cite>tahoe backup .protagonist</cite> will back up the contents of truenames files, which it would skip if it &quot;knew&quot; they were symlinks.</p>
+</li>
+</ul>
+
+</article>
+<article class="slide level-2" id="parsing-boolean-expressions">
+<h2>Parsing Boolean expressions</h2>
+<ul>
+<li><p class="first">Infix to Postfix Stack algorithm with 2 stacks:</p>
+<ul class="simple">
+<li>result</li>
+<li>op, for operators</li>
+</ul>
+<p>Read each token <em>t</em>.</p>
+<ul class="simple">
+<li><em>t</em> is an operand? Push to result.</li>
+<li><em>t</em> is an operator?<ul>
+<li>Top of op is empty or lower precedence?<ul>
+<li>Yes? Push <em>t</em>.</li>
+<li>No? Pop the higher-precedence operator, <em>s</em>, push <em>s</em> to result, push <em>t</em> to op.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</article>
+<article class="slide level-2" id="infix-to-postfix">
+<h2>Infix to Postfix</h2>
+<p>A + B * C</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="29%" />
+<col width="25%" />
+<col width="46%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">token</th>
+<th class="head">ops</th>
+<th class="head">result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>A</td>
+<td>&nbsp;</td>
+<td>A</td>
+</tr>
+<tr class="row-odd"><td>+</td>
+<td>+</td>
+<td>A</td>
+</tr>
+<tr class="row-even"><td>B</td>
+<td>+</td>
+<td>A B</td>
+</tr>
+<tr class="row-odd"><td>*</td>
+<td>+ *</td>
+<td>A B</td>
+</tr>
+<tr class="row-even"><td>C</td>
+<td>&nbsp;</td>
+<td>A B C</td>
+</tr>
+<tr class="row-odd"><td>&lt;end &gt;</td>
+<td>&nbsp;</td>
+<td>A B C * +</td>
+</tr>
+</tbody>
+</table>
+<p>Protagonist takes this algorithm, but passes the tokens to set operations before appending them to the result.</p>
+<p>Tag1 OR Tag2</p>
+
+</article>
+
+
+</section>
+
+<section id="slide_notes">
+
+</section>
+
+  </body>
+</html>
