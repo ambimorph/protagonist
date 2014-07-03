@@ -30,7 +30,7 @@ Protagonist could be implemented with symbolic links, but hard links were chosen
 * To enable reference counting and tracking logic.
 * To reduce layers of indirection.
 
-.. _Tahoe-LAFS: www.tahoe-lafs.org
+.. _Tahoe-LAFS: http://www.tahoe-lafs.org
 
 Unique identifiers
 ------------------
