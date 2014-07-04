@@ -39,13 +39,8 @@ doc_fnames=[ u'COPYING.rst', u'README.rst' ]
 doc_loc = u"share/doc/" + PKG
 
 data_files = []
-"""
-    (doc_loc, doc_fnames),
-    (os.path.join(u'pyutil', u'data'), [os.path.join(u'pyutil', u'data', u'wordlist.txt')])
-    ]
 
-install_requires=[u'zbase32 >= 1.0']
-"""
+install_requires=[u'pyblake2 >= 0.9.3']
 
 readmetext_bytes = open(u'README.rst').read()
 readmetext_unicode = readmetext_bytes.decode('utf-8')
@@ -64,7 +59,6 @@ setup(name=PKG,
       packages=find_packages(),
       include_package_data=True,
       data_files=data_files,
-      extras_require={u'pyblake2': [u'pyblake2 >= 0.9.3',]},
       #install_requires=install_requires,
       classifiers=trove_classifiers,
       entry_points = {
