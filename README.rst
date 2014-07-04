@@ -5,6 +5,8 @@
 Protagonist implements a *tagsystem*: it is used for tagging files non-hierarchically, so that they can be found with boolean queries.
 Protagonist interfaces a particular filesystem structure (described below) that represents a tagsystem through the use of special directories and links.
 
+(For usage examples, see EXAMPLES.rst.)
+
 A major design constraint of this project is to provide seamless compatibility with Tahoe-LAFS_ backup storage.
 Tahoe-LAFS backup will take a directory and recursively back up the files in every subdirectory.
 It does not have a native representation of symbolic links.
