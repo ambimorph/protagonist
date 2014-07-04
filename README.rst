@@ -9,7 +9,6 @@ A major design constraint of this project is to provide seamless compatibility w
 Tahoe-LAFS backup will take a directory and recursively back up the files in every subdirectory.
 It does not have a native representation of symbolic links.
 
-*The remainder of this document is an on-going design specification that I am designing as I go, in tandem with the implementation.*
 
 Structure
 =========
@@ -19,7 +18,7 @@ The tagsystem structure is defined in a special directory named ".protagonist/".
 There is a subdirectory named ".protagonist/tags", and a subdirectory ".protagonist/tags/t" for every existing tag, t.
 Any file which is tagged with t is given a unique identifier and a hard link in the directory t.
 
-More generally, the tagsystem supports key-value pairs, with the directories ".protagonist/key/value/"
+More generally, an intended future feature is that the tagsystem supports key-value pairs, with the directories ".protagonist/key/value/"
 
 Why hard links?
 ---------------
@@ -35,7 +34,7 @@ Protagonist could be implemented with symbolic links, but hard links were chosen
 Unique identifiers
 ------------------
 
-For unique file identification, Protagonist will use the BLAKE2 hash of the contents at the time of tagging, with the same file extension as the original file.
+For unique file identification, Protagonist uses the (20 byte) BLAKE2 hash of the contents at the time of tagging, with the same file extension as the original file.
 The potential advantages of content-based hashing are:
 
 * Recovery from file movement.
@@ -45,34 +44,37 @@ The potential advantages of content-based hashing are:
 
 Using content-based hashing on mutable files will not have these advantages, though it could be used to help clarify intent, by, for example, allowing the user to specifically list files that should stay unchanged.
 
-Using hard links will have repercussions for deleting files that have been tagged.  With symlinks, a deleted or moved file will leave broken links.  With hard links, there would need to be special logic for determining whether the file exists outside of the tagsystem.
+Using hard links has repercussions for deleting files that have been tagged.  With symlinks, a deleted or moved file will leave broken links.  With hard links, there needs to be special logic for determining whether the file exists outside of the tagsystem.
+This is implemented in the command line interface, which wraps `rm` and `mv`.
 
-True Names
-----------
+Truenames
+---------
 
-A potential problem with using unique IDs is that now the result of a *tagls* is not recognisable to the user.
-This motivates some kind of index.
+A problem with using unique IDs is that now the result of a *tagls* is not recognisable to the user.
+This motivates the truenames index.
 
 Part of the goals of this project is to use the directory structure of the underlying filesystem as a primitive that can be used as a data structure.
 Therefore, I wish to avoid symlinks and databases in favour of filesystem mechanisms.
 
-The design I have chosen is to make a special directory called "true_names", where there is a file named with the file ID, the contents of which are the true pathname.
-This is eerily like implementing symlinks, where the file ID is a hash instead of an inode ID.
+The design I have chosen is to make a special directory called "truenames", where there is a file named with the file ID, the contents of which are the true pathname.
+This is eerily like implementing symlinks.
+It essentially *is* symlinks, but stealth symlinks, that aren't flagged as such in the inode tables, and therefore aren't followed by commands that normally follow symlinks.
 
 
 Methods
 =======
 
-The tagsystem should support:
+The tagsystem supports:
 
-* creation of a new tagsystem
 * addition and deletion of tags
 * tagging and untagging files
 * querying with boolean combinations
+* cleanly removing and moving files from the filesystem even if they have been tagged.
 
 creation of a tagsystem
 -----------------------
 
+The tagsystem is automatically created with the first tagging of a file.
 Tagsystem creation is idempotent.  If there is already a tagsystem there, nothing is changed.
 
 untagging files
@@ -86,7 +88,7 @@ When we wish to remove a tag, t, from a file, f:
 deleting tags
 -------------
 
-Tag deletion can be done even if some files have the tag.  Those links just go away.
+Tag deletion can be done even if some files have the tag.  Those links just go away, and if I file is left with no tags, it is removed from the truenames index.
 
 Dependencies
 ============
