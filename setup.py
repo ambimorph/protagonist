@@ -59,7 +59,7 @@ setup(name=PKG,
       packages=find_packages(),
       include_package_data=True,
       data_files=data_files,
-      #install_requires=install_requires,
+      install_requires=install_requires,
       classifiers=trove_classifiers,
       entry_points = {
           u'console_scripts': [
